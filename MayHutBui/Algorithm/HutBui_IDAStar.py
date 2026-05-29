@@ -1,5 +1,4 @@
 import random
-import heapq
 
 class Node:
     def __init__(self, state, x, y, node_parent=None, action=None, cost=0, g=0):
@@ -61,25 +60,41 @@ def move(node, x, y):
 def calculate_cost(state):
     return sum(row.count(1) for row in state)
 
-def AStar(initial_state, goal_state, x, y):
+def IDAStar(initial_state, goal_state, x, y, limit=10000):
+    I = calculate_cost(initial_state)
+    while I <= limit :
+        result, minimum = DLSAStar(initial_state, goal_state, x, y, I)
+        if result is not None:
+            return result
+        I += minimum
+    return None
+
+
+
+def DLSAStar(initial_state, goal_state, x, y, limit):
 
     initial_copy = copy_node(initial_state)
 
     if initial_copy[x][y] == 1:
         initial_copy[x][y] = 0
         
-    root = Node(initial_copy, x, y, node_parent=None, action=None, cost=calculate_cost(initial_copy))
+    root = Node(initial_copy, x, y, node_parent=None, action=None, cost=calculate_cost(initial_copy) + calculate_cost(initial_copy), g= calculate_cost(initial_copy))
     frontier = []
-    heapq.heappush(frontier, (root.cost, root))
+
+    if root.cost >= limit:
+        return None, root.cost  
+    
+    frontier.append(root)
 
     reached = {}
     best_cost = {}
+    minimum = float('inf')
 
     while frontier:
 
-        current_cost, current_node = heapq.heappop(frontier)
+        current_node = frontier.pop()
 
-        if current_cost > best_cost.get(current_node, float('inf')):
+        if current_node.cost > best_cost.get(current_node, float('inf')):    
             continue
 
         current_key = (
@@ -91,15 +106,15 @@ def AStar(initial_state, goal_state, x, y):
         reached[current_key] = current_node.cost
 
         if current_node.state == goal_state:
-            return current_node
+            return current_node, current_node.cost
 
         moves = move(current_node.state, current_node.x, current_node.y)
 
         for neighbor, action, new_x, new_y in moves:
 
             in_frontier = any(
-                n.state == neighbor and n.x == new_x and n.y == new_y
-                for _, n in frontier
+                node.state == neighbor and node.x == new_x and node.y == new_y
+                for node in frontier
             )
 
             neighbor_key = (
@@ -121,16 +136,22 @@ def AStar(initial_state, goal_state, x, y):
 
                 child.cost = child.g + calculate_cost(neighbor)
 
+                if child.cost >= limit:
+                    minimum = min(minimum, child.cost)
+                    continue
+
                 if neighbor_key in reached and child.cost < reached[neighbor_key]:
                     reached[neighbor_key] = child.cost
                 
 
-                if in_frontier and child.cost < reached[neighbor_key]:
-                    best_cost[neighbor_key] = child.cost
+                for n in range(len(frontier)):
+                    if frontier[n].state == neighbor and frontier[n].x == new_x and frontier[n].y == new_y and child.cost < frontier[n].cost:
+                        frontier[n] = child
+                        break
+                else:
+                    frontier.append(child)
 
-                heapq.heappush(frontier, (child.cost, child))
-
-    return None
+    return None, minimum
 
 def print_room(state):
     for row in state:
@@ -172,7 +193,7 @@ def get_path(node):
             "cost": node.cost
         })
 
-        node = node.parent
+        node = node.parent  
 
     path.reverse()
 
@@ -191,7 +212,8 @@ def get_path(node):
 # x = random.randint(0, n - 1)
 # y = random.randint(0, m - 1)
 
-# result = AStar(initial_state, goal_state, x, y)
+
+# result = IDAStar(initial_state, goal_state, x, y)
 
 # if result:
 #     print_result(result)

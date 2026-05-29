@@ -52,7 +52,7 @@ pip install tkinter
 ### 3. Chạy chương trình
 
 ```bash
-python Visualizer.ipynb
+python Main.ipynb
 ```
 
 ---
