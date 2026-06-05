@@ -55,38 +55,45 @@ def move(node, x, y):
 def calculate_cost(state):
     return sum(row.count(1) for row in state)
 
-def SteppestHill(initial_state, goal_state, x, y):
-    if initial_state[x][y] == 1:
-        initial_state[x][y] = 0
+def state_to_tuple(state):
+    return tuple(tuple(row) for row in state)
 
-    root = Node(initial_state, x, y, action=None, cost=calculate_cost(initial_state))
+def Beam(initial_state, goal_state, x, y, beam_width):
+    state = copy_node(initial_state)
 
-    current_node = root
-    parent_node = None
+    if state[x][y] == 1:
+        state[x][y] = 0
 
-    while True:
+    root = Node(state, x, y, action=None, cost=calculate_cost(state))
 
-        if current_node.state == goal_state:
-            return current_node
+    frontier = [root]
 
-        moves = move(current_node.state, current_node.x, current_node.y)
+    while frontier:
 
-        parent_node = current_node.state
+        next_frontier = []  
 
-        child = []
+        for current_node in frontier:
+            if current_node.state == goal_state:
+                return current_node
 
-        for neighbor, action, new_x, new_y in moves:
-            neighbor_cost = calculate_cost(neighbor)
-            if neighbor_cost < current_node.cost:
+            children = move(
+                current_node.state,
+                current_node.x,
+                current_node.y
+            )
+
+            for neighbor, action, new_x, new_y in children:
+                neighbor_cost = calculate_cost(neighbor)
                 child_node = Node(neighbor, new_x, new_y, parent=current_node, action=action, cost=neighbor_cost)
-                child.append(child_node)
+                next_frontier.append(child_node)
 
-        if not child:
+        
+        next_frontier.sort(key=lambda node: node.cost)
+
+        if not next_frontier:
             break
 
-        best_cost = min(node.cost for node in child)
-        best_child = [node for node in child if node.cost == best_cost]
-        current_node = random.choice(best_child)
+        frontier = next_frontier[:beam_width]
 
     return current_node
         
@@ -150,11 +157,12 @@ def get_path(node):
 #     initial_state.append(row)
 # x = random.randint(0, n - 1)
 # y = random.randint(0, m - 1)
-# result = SteppestHill(initial_state, goal_state, x, y)
+# beam_width = int(input("Nhập số phần tử tối đa: "))
+# result = Beam(initial_state, goal_state, x, y, beam_width)
 
 # if result.state == goal_state:
-#     print_result(result)
 #     print("Đã tìm thấy giải pháp.")
-# else:
 #     print_result(result)
+# else:
 #     print("Đã đạt giá trị cục bộ.")
+#     print_result(result)

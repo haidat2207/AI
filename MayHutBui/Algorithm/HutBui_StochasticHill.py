@@ -150,7 +150,7 @@ def get_path(node):
 # y = random.randint(0, m - 1)
 # result = StochasticHill(initial_state, goal_state, x, y)
 
-# if result == goal_state:
+# if result.state == goal_state:
 #     print_result(result)
 #     print("Đã tìm thấy giải pháp.")
 # else:

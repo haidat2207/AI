@@ -72,10 +72,14 @@ def UCS(initial_state, goal_state, x, y):
     heapq.heappush(frontier, (root.cost, root))
 
     reached = {}
+    best_cost = {}
 
     while frontier:
 
         current_cost, current_node = heapq.heappop(frontier)
+
+        if current_cost > best_cost.get(current_node, float('inf')):
+            continue
 
         current_key = (
             tuple(map(tuple, current_node.state)),
@@ -114,9 +118,13 @@ def UCS(initial_state, goal_state, x, y):
                     cost=current_node.cost + calculate_cost(neighbor)
                 )
 
-                if neighbor_key not in reached or child.cost < reached[neighbor_key]:
+                if neighbor_key in reached and child.cost < reached[neighbor_key]:
 
                     reached[neighbor_key] = child.cost
+                
+
+                if in_frontier and child.cost < reached[neighbor_key]:
+                    best_cost[neighbor_key] = child.cost
 
                 heapq.heappush(frontier, (child.cost, child))
 

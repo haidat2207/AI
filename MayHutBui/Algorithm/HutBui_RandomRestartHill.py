@@ -55,7 +55,19 @@ def move(node, x, y):
 def calculate_cost(state):
     return sum(row.count(1) for row in state)
 
-def SteppestHill(initial_state, goal_state, x, y):
+def RandomRestartHill(initial_state, goal_state, x, y, MAX_RESTART=10):
+    for i in range(MAX_RESTART):  # Số lần thử ngẫu nhiên
+        result = StochasticHill(initial_state, goal_state, x, y)
+
+        print("-" * 30)
+        print("LẦN", i + 1)
+        print_result(result)
+
+        if result.state == goal_state:
+            return result
+    return None
+
+def StochasticHill(initial_state, goal_state, x, y):
     if initial_state[x][y] == 1:
         initial_state[x][y] = 0
 
@@ -84,9 +96,7 @@ def SteppestHill(initial_state, goal_state, x, y):
         if not child:
             break
 
-        best_cost = min(node.cost for node in child)
-        best_child = [node for node in child if node.cost == best_cost]
-        current_node = random.choice(best_child)
+        current_node = random.choice(child)
 
     return current_node
         
@@ -150,11 +160,10 @@ def get_path(node):
 #     initial_state.append(row)
 # x = random.randint(0, n - 1)
 # y = random.randint(0, m - 1)
-# result = SteppestHill(initial_state, goal_state, x, y)
+# maxrestart = int(input("Nhập số lần thử ngẫu nhiên: "))
+# result = RandomRestartHill(initial_state, goal_state, x, y, maxrestart)
 
 # if result.state == goal_state:
-#     print_result(result)
 #     print("Đã tìm thấy giải pháp.")
 # else:
-#     print_result(result)
 #     print("Đã đạt giá trị cục bộ.")

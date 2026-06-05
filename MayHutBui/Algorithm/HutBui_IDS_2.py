@@ -1,5 +1,3 @@
-import random
-
 class Node:
     def __init__(self, state, x, y, node_parent=None, action=None, depth=0):
         self.state = state
@@ -53,7 +51,7 @@ def move(node, x, y):
     return neighbors
 
 
-def IDS(initial_state, goal_state, x, y, depth_limit):
+def IDS(initial_state, goal_state, x, y, depth_limit = 1000):
     depth = 0
     while depth <= depth_limit:
         result = DLS(initial_state, goal_state, x, y, depth)
