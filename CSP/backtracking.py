@@ -1,5 +1,4 @@
 def is_consistent(var, color, assignment, neighbors):
-    """Kiểm tra var tô color có trùng màu với vùng kề đã tô hay không."""
     for nb in neighbors.get(var, []):
         if assignment.get(nb) == color:
             return False, nb
@@ -7,10 +6,6 @@ def is_consistent(var, color, assignment, neighbors):
 
 
 def choose_unassigned_variable(variables, assignment, neighbors):
-    """
-    Chọn vùng chưa tô.
-    Ưu tiên vùng có nhiều láng giềng hơn để Backtracking chạy nhanh hơn trên bản đồ thật.
-    """
     unassigned = [v for v in variables if v not in assignment]
     if not unassigned:
         return None
@@ -25,10 +20,6 @@ def choose_unassigned_variable(variables, assignment, neighbors):
 
 
 def solve_map_coloring(variables, colors, neighbors):
-    """
-    Generator giải bài toán tô màu bản đồ.
-    Mỗi lần yield trả về 1 bước để visualizer tô màu và ghi log.
-    """
     assignment = {}
 
     yield {
