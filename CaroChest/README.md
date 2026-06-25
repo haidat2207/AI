@@ -202,6 +202,6 @@ Với **Caro 3×3 giữa hai bên cạnh tranh trực tiếp**, **Alpha-Beta Pru
 ---
 
 
-## 🚀 Cách chạy
+## 🚀Link GITHUB
 
 https://github.com/haidat2207/AI/tree/main/CaroChest
