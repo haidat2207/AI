@@ -55,7 +55,7 @@ def move(node, x, y):
 def calculate_cost(state):
     return sum(row.count(1) for row in state)
 
-def RandomRestartHill(initial_state, goal_state, x, y, MAX_RESTART=10):
+def RandomRestartHill(initial_state, goal_state, x, y, MAX_RESTART=1000):
     for i in range(MAX_RESTART):  # Số lần thử ngẫu nhiên
         result = StochasticHill(initial_state, goal_state, x, y)
 
@@ -63,9 +63,8 @@ def RandomRestartHill(initial_state, goal_state, x, y, MAX_RESTART=10):
         print("LẦN", i + 1)
         print_result(result)
 
-        if result.state == goal_state:
-            return result
-    return None
+
+    return result
 
 def StochasticHill(initial_state, goal_state, x, y):
     if initial_state[x][y] == 1:
