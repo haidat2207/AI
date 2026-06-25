@@ -271,24 +271,9 @@ Trong project, thuật toán dừng khi không còn xung đột hoặc khi đã 
 
 ---
 
-## 📏 Gợi ý đánh giá thực nghiệm
-
-Khi làm báo cáo, có thể lập bảng kết quả theo các tiêu chí sau:
-
-| Thuật toán | Thời gian xử lý | Số bước log | Số lần quay lui | Số màu bị loại | Số xung đột cuối | Thành công |
-|---|---:|---:|---:|---:|---:|---|
-| Backtracking | ... | ... | ... | ... | 0 | Có |
-| Forward Checking | ... | ... | ... | ... | 0 | Có |
-| AC-3 + Backtracking | ... | ... | ... | ... | 0 | Có |
-| Min-Conflict | ... | ... | Không áp dụng | Không áp dụng | ... | Có/Không |
-
-Với Min-Conflict, nên chạy nhiều lần và ghi nhận trung bình thời gian, số bước và số lần thành công, vì thuật toán có yếu tố ngẫu nhiên.
-
----
-
 ## 🛠️ Công nghệ sử dụng
 
-- Python
+- Python    
 - Tkinter
 - Jupyter Notebook
 - JSON / TopoJSON / GeoJSON
