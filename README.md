@@ -186,3 +186,9 @@ Mỗi thư mục là một bài tập hoặc mô hình riêng nên cấu trúc f
 
 * Sinh viên: Hải Đạt
 * Nội dung: Đồ án cá nhân môn Trí tuệ nhân tạo
+
+---
+
+## LINK GITHUB:
+
+https://github.com/haidat2207/AI
